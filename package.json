@@ -1,0 +1,20 @@
+{
+  "name": "ncue-api",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/mocha",
+    "doc": "./node_modules/.bin/jsdoc index.js -d docs"
+  },
+  "author": "ALiangLiang",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.4.3",
+    "mocha": "^3.3.0"
+  }
+}
