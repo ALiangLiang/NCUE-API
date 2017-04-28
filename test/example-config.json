@@ -1,10 +1,10 @@
-// Instructions: Copy this file to test-config.json, fill in your test data
-// and remove all comments (JSON doesn't support comments).
-// Run the test with `npm test` after installing the devDependencies (mocha).
+// 教學： 複製此文件，並命名為「test-config.json」，並且變更此文件的參數
+// ，然後移除設定檔中的註解，因為 JSON 不支援註解。
+// 安裝完成「devDependencies」後，下「npm test」來運行測試。
 {
-  // Test user login information
+  // 測試用使用者的資料
   "user": {
-    "id": "S0254003",
-    "password": "qwerty"
+    "id": "S0254003", // 學號
+    "password": "qwerty" // 密碼
   }
 }
