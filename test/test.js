@@ -2,7 +2,7 @@ const
   api = require('../index.js'),
   conf = require('./test-config.json'),
   assert = require('assert'),
-  jar = require('request').jar()
+  jar = api.jar()
 
 describe('登入', function() {
   it('should 回傳 true 當登入成功', function(done) {
@@ -42,9 +42,10 @@ describe('線上報名系統', function() {
         })
 
         targetEventId = events.filter((event) => event.signupUrl && (event.max > event.cur))[1].id
-        console.log(targetEventId)
+        if (!targetEventId)
+          throw new Error('目前沒有可以測試的活動')
       })
-      .then(done, done)
+      .then(() => done(), done)
   })
 
   it('should 取得報名活動清單', function(done) {
@@ -63,7 +64,7 @@ describe('線上報名系統', function() {
 
         originSignedupEvents = events
       })
-      .then(done, done)
+      .then(() => done(), done)
   })
 
   it('should 回傳 true 當報名成功的時候', function(done) {
@@ -74,10 +75,14 @@ describe('線上報名系統', function() {
 
   it('should 回傳 true 當取消報名成功的時候', function(done) {
     api.getSignedupEvents(jar)
-      .then((events) => events.filter((e) => !originSignedupEvents.find((e2) => e2.id === e.id))[0])
+      //找出新報名的活動
+      .then((events) => events.filter((e) =>
+        !originSignedupEvents.find((e2) => e2.id === e.id))[0])
+      // 取得報名編號
       .then((newSignupEvent) => api.getSignSeq(jar, newSignupEvent.id))
+      // 以報名編號來取消報名
       .then((signSeq) => assert.ok(api.cancelSignupEvent(jar, signSeq)))
-      .then(done, done)
+      .then(() => done(), done)
   })
 
   it('should 回傳 false 當取消報名失敗的時候', function(done) {
@@ -88,13 +93,17 @@ describe('線上報名系統', function() {
 
   it('should 回傳已認證的時數列表', function(done) {
     api.getApprovedGeneralEduList(jar)
-      .then((list) => list.forEach((row) => {
-        assert.ok(typeof row.id === 'number')
-        assert.ok(typeof row.name === 'string')
-        assert.ok(typeof row.href === 'string')
-        assert.ok(row.date instanceof Date)
-        assert.ok(typeof row.hours === 'number')
-      }))
-      .then(done, done)
+      .then((list) => {
+        if (list.length === 0)
+          console.warn('無認證時數紀錄，無法測試。')
+        return list.forEach((row) => {
+          assert.ok(typeof row.id === 'number')
+          assert.ok(typeof row.name === 'string')
+          assert.ok(typeof row.href === 'string')
+          assert.ok(row.date instanceof Date)
+          assert.ok(typeof row.hours === 'number')
+        })
+      })
+      .then(() => done(), done)
   })
 })

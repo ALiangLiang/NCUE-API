@@ -1,6 +1,9 @@
 const
+  // 用來剖析 html 的套件
   cheerio = require('cheerio'),
+  // 請求網頁的套件
   Request = require('request'),
+  // promise 化 request 函數
   request = function(options) {
     return new Promise((resolve, reject) => {
       Request(options, function(error, response, body) {
@@ -12,6 +15,13 @@ const
   }
 
 module.exports = {
+  /**
+   * cookie jar，單純是 Request 套件 jar。
+   * @name jar
+   * @method
+   * @returns {RequestJar} Request 套件 jar
+   */
+  jar: Request.jar,
   /**
    * 登入 NCUE APP 服務
    * @name login
