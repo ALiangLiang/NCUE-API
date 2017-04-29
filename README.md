@@ -8,6 +8,14 @@
 
 [https://aliangliang.github.io/NCUE-API/](https://aliangliang.github.io/NCUE-API/)
 
+### TODO
+
+- [x] APP 端登入 (aps.ncue.edu.tw)
+- [x] 線上報名系統
+- [x] 歷年成績
+- [ ] 課表
+- [ ] 個人資料 (姓名、性別、系級)
+
 ### 我們的小默契
 
 code 裡的註解請使用中文，其餘變數與函數名稱，請採用英文與[小駝峰式命名法](https://zh.wikipedia.org/wiki/%E9%A7%9D%E5%B3%B0%E5%BC%8F%E5%A4%A7%E5%B0%8F%E5%AF%AB)，coding style "盡量"使用 [standard style](https://github.com/feross/standard/blob/master/docs/README-zhtw.md)。
