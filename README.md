@@ -37,7 +37,7 @@ const api = require('ncue-api')
 ```
 
 #### cookie 儲藏
-[RequestJar](https://github.com/request/request) 為 Request 套件的 [jar](https://github.com/request/request/blob/master/lib/cookies.js) 物件，可直接使用來新建新的 cookie 罐。
+[RequestJar](https://github.com/request/request) 為 Request 套件的 [jar](https://github.com/request/request/blob/master/lib/cookies.js) 物件，可直接使用下列方式來新建新的 RequestJar。
 ```js
 const jar = require('ncue-api').jar()
 ```
