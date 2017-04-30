@@ -81,6 +81,7 @@ module.exports = {
    * 取得通識講座列表
    * @name getEvents
    * @method
+   * @param {Stirng} 活動種類：'全部', '通識', '心靈', '語文'，預設為'全部'
    * @returns {Array.<{
    *   id: Number,
    *   name: String,
@@ -93,10 +94,13 @@ module.exports = {
    *   menberListUrl: (String | null)
    * }>}
    */
-  getEvents: function() {
+  getEvents: function(type = '全部') {
+    let selpp = (type === '通識') ? 1 :
+      ((type === '心靈') ? 2 :
+        ((type === '語文') ? 4 : 0))
     const options = {
       method: 'GET',
-      url: 'http://aps.ncue.edu.tw/app/signup.php?selpp=1',
+      url: 'http://aps.ncue.edu.tw/app/signup.php?selpp=' + selpp,
       headers: {
         'cache-control': 'no-cache'
       }

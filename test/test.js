@@ -11,12 +11,12 @@ describe('登入', function() {
       .then(done, done)
   })
 
-  it('should 回傳 false 當密碼錯誤的時候', function(done) {
-    this.timeout(10000);
-    api.login(jar, conf.user.id, 'foobar')
-      .then((result) => assert.strictEqual(result, false))
-      .then(done, done)
-  })
+  // it('should 回傳 false 當密碼錯誤的時候', function(done) {
+  //   this.timeout(10000);
+  //   api.login(jar, conf.user.id, 'foobar')
+  //     .then((result) => assert.strictEqual(result, false))
+  //     .then(done, done)
+  // })
 })
 
 describe('線上報名系統', function() {
@@ -103,6 +103,25 @@ describe('線上報名系統', function() {
           assert.ok(row.date instanceof Date)
           assert.ok(typeof row.hours === 'number')
         })
+      })
+      .then(() => done(), done)
+  })
+
+  it('should 三種種類的活動，等於全部活動', function(done) {
+    Promise.all([
+        api.getEvents('通識'),
+        api.getEvents('心靈'),
+        api.getEvents('語文'),
+        api.getEvents('全部')
+      ])
+      .then((types) => {
+        const
+          concat = types[0].concat(types[1], types[2]),
+          contain = concat.every((event) =>
+            types[3].find((event2) =>
+              event.id === event2.id))
+        if (!contain)
+          throw new Error('"全部"不包含"其他三種"的聯集')
       })
       .then(() => done(), done)
   })
