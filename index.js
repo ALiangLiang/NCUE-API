@@ -97,7 +97,6 @@ const api = {
    * @returns {String} 回傳成績頁面
    */
   getScore: function(jar) {
-
     return request({
         method: 'GET',
         url: 'http://aps.ncue.edu.tw/app/score.php',
@@ -107,7 +106,7 @@ const api = {
         jar: jar
       })
       .then(([res, body]) => {
-        if (body.search('系統已自動登出') !== -1) {
+        if (body.search('請於首頁右上角之【設定】登入後使用') !== -1) {
           if (jar.autoRelogin && jar.remember && jar.userId && jar.password)
             return api.login(jar)
               .then((result) => (result) ?
@@ -228,7 +227,7 @@ const api = {
           throw new Error('活動報名失敗。')
         else if (body.search('您已經報名本活動了') !== -1)
           throw new Error('已經報名本活動。')
-        else if (body.search('系統已自動登出') !== -1) {
+        else if (body.search('請於首頁右上角之【設定】登入後使用') !== -1) {
           if (jar.autoRelogin && jar.remember && jar.userId && jar.password)
             return api.login(jar)
               .then((result) => (result) ?
