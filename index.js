@@ -83,7 +83,7 @@ const api = {
    * @name logout
    * @method
    * @param {RequestJar} jar - 一個jar
-   * @returns {Boolean} 登入結果，true 或 false
+   * @returns {Boolean} 登出結果，true 或 false
    */
   logout: function(jar) {
     return Promise.resolve(delete jar['_jar']['store']['idx']['aps.ncue.edu.tw']['/']['PHPSESSID'])

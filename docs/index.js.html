@@ -42,7 +42,7 @@
     })
   }
 
-module.exports = {
+const api = {
 
   /**
    * Request 套件的 jar 物件。
@@ -75,7 +75,7 @@ module.exports = {
   login: function(jar, userId, password, options = {}) {
     const remember = options.remember || false
 
-    jar.autoRelogin = options.autoRelogin || jar.autoRelogin
+    jar.autoRelogin = options.autoRelogin || jar.autoRelogin || false
 
     return request({
         method: 'POST',
@@ -106,6 +106,16 @@ module.exports = {
         }
       })
   },
+  /**
+   * 登出 NCUE APP 服務，
+   * @name logout
+   * @method
+   * @param {RequestJar} jar - 一個jar
+   * @returns {Boolean} 登出結果，true 或 false
+   */
+  logout: function(jar) {
+    return Promise.resolve(delete jar['_jar']['store']['idx']['aps.ncue.edu.tw']['/']['PHPSESSID'])
+  },
 
   /**
    * 取得用戶歷年成績
@@ -115,17 +125,27 @@ module.exports = {
    * @returns {String} 回傳成績頁面
    */
   getScore: function(jar) {
-    const options = {
-      method: 'GET',
-      url: 'http://aps.ncue.edu.tw/app/score.php',
-      headers: {
-        'cache-control': 'no-cache'
-      },
-      jar: jar
-    }
 
-    return request(options)
-      .then(([res, body]) => body)
+    return request({
+        method: 'GET',
+        url: 'http://aps.ncue.edu.tw/app/score.php',
+        headers: {
+          'cache-control': 'no-cache'
+        },
+        jar: jar
+      })
+      .then(([res, body]) => {
+        if (body.search('系統已自動登出') !== -1) {
+          if (jar.autoRelogin &amp;&amp; jar.remember &amp;&amp; jar.userId &amp;&amp; jar.password)
+            return api.login(jar)
+              .then((result) => (result) ?
+                api.Score(jar) :
+                Promise.reject(new Error('無法登入')))
+          else
+            throw new Error('尚未登入。')
+        }
+        return body
+      })
   },
 
   /**
@@ -236,8 +256,16 @@ module.exports = {
           throw new Error('活動報名失敗。')
         else if (body.search('您已經報名本活動了') !== -1)
           throw new Error('已經報名本活動。')
-        else if (body.search('系統已自動登出') !== -1)
-          throw new Error('尚未登入。')
+        else if (body.search('系統已自動登出') !== -1) {
+          if (jar.autoRelogin &amp;&amp; jar.remember &amp;&amp; jar.userId &amp;&amp; jar.password)
+            return api.login(jar)
+              .then((result) => (result) ?
+                api.signupEvent(jar, eventId, userId) :
+                Promise.reject(new Error('無法登入')))
+          else
+            throw new Error('尚未登入。')
+        }
+
         return true
       })
   },
@@ -267,8 +295,15 @@ module.exports = {
         jar: jar
       })
       .then(([res, body]) => {
-        if (body.search('請於首頁右上角之【設定】登入後使用' !== -1))
-          throw new Error('尚未登入。')
+        if (body.search('請於首頁右上角之【設定】登入後使用') !== -1) {
+          if (jar.autoRelogin &amp;&amp; jar.remember &amp;&amp; jar.userId &amp;&amp; jar.password)
+            return api.login(jar)
+              .then((result) => (result) ?
+                api.getSignedupEvents(jar) :
+                Promise.reject(new Error('無法登入')))
+          else
+            throw new Error('尚未登入。')
+        }
 
         const
           $ = cheerio.load(body, {
@@ -345,8 +380,15 @@ module.exports = {
 
     return request(options)
       .then(([res, body]) => {
-        if (body.search('請於首頁右上角之【設定】登入後使用' !== -1))
-          throw new Error('尚未登入。')
+        if (body.search('請於首頁右上角之【設定】登入後使用') !== -1) {
+          if (jar.autoRelogin &amp;&amp; jar.remember &amp;&amp; jar.userId &amp;&amp; jar.password)
+            return api.login(jar)
+              .then((result) => (result) ?
+                api.cancelSignupEvent(jar, signSeq) :
+                Promise.reject(new Error('無法登入')))
+          else
+            throw new Error('尚未登入。')
+        }
 
         if (body.search('已取消本筆活動報名資料') === -1)
           return false
@@ -382,6 +424,16 @@ module.exports = {
 
     return request(options)
       .then(([res, body]) => {
+        if (body.search('請於首頁右上角之【設定】登入後使用') !== -1) {
+          if (jar.autoRelogin &amp;&amp; jar.remember &amp;&amp; jar.userId &amp;&amp; jar.password)
+            return api.login(jar)
+              .then((result) => (result) ?
+                api.getApprovedGeneralEduList(jar) :
+                Promise.reject(new Error('無法登入')))
+          else
+            throw new Error('尚未登入。')
+        }
+
         const
           $ = cheerio.load(body, {
             ignoreWhitespace: true,
@@ -408,6 +460,8 @@ module.exports = {
       })
   },
 }
+
+module.exports = api
 </code></pre>
         </article>
     </section>
@@ -418,13 +472,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#cancelSignupEvent">cancelSignupEvent</a></li><li><a href="global.html#getApprovedGeneralEduList">getApprovedGeneralEduList</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getScore">getScore</a></li><li><a href="global.html#getSignedupEvents">getSignedupEvents</a></li><li><a href="global.html#getSignSeq">getSignSeq</a></li><li><a href="global.html#jar">jar</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#signupEvent">signupEvent</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#cancelSignupEvent">cancelSignupEvent</a></li><li><a href="global.html#getApprovedGeneralEduList">getApprovedGeneralEduList</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getScore">getScore</a></li><li><a href="global.html#getSignedupEvents">getSignedupEvents</a></li><li><a href="global.html#getSignSeq">getSignSeq</a></li><li><a href="global.html#jar">jar</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#signupEvent">signupEvent</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 02:49:09 GMT+0800 (台北標準時間)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 04:05:28 GMT+0800 (台北標準時間)
 </footer>
 
 <script> prettyPrint(); </script>
