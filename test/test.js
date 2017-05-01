@@ -6,7 +6,21 @@ const
 
 describe('登入', function() {
   it('should 回傳 true 當登入成功', function(done) {
-    api.login(jar, conf.user.id, conf.user.password)
+    api.login(jar, conf.user.id, conf.user.password, {
+        remember: true
+      })
+      .then((result) => assert.strictEqual(result, true))
+      .then(done, done)
+  })
+
+  it('should 回傳 true 當登出成功', function(done) {
+    api.logout(jar)
+      .then((result) => assert.strictEqual(result, true))
+      .then(done, done)
+  })
+
+  it('should 回傳 true 當使用記憶帳密登入成功', function(done) {
+    api.login(jar)
       .then((result) => assert.strictEqual(result, true))
       .then(done, done)
   })
@@ -95,7 +109,7 @@ describe('線上報名系統', function() {
     api.getApprovedGeneralEduList(jar)
       .then((list) => {
         if (list.length === 0)
-          console.warn('無認證時數紀錄，無法測試。')
+          throw new Error('無認證時數紀錄，無法測試。')
         return list.forEach((row) => {
           assert.ok(typeof row.id === 'number')
           assert.ok(typeof row.name === 'string')

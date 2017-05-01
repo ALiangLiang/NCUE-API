@@ -101,7 +101,7 @@
 
     
 
-    <h4 class="name" id="cancelSignupEvent"><span class="type-signature"></span>cancelSignupEvent<span class="signature">(一個已經登入的jar, 報名編號)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    <h4 class="name" id="cancelSignupEvent"><span class="type-signature"></span>cancelSignupEvent<span class="signature">(jar, signSeq)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
 
     
 
@@ -144,13 +144,13 @@
 
         <tr>
             
-                <td class="name"><code>一個已經登入的jar</code></td>
+                <td class="name"><code>jar</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">RequestJar</span>
+<span class="param-type"><a href="global.html#RequestJar">RequestJar</a></span>
 
 
             
@@ -160,14 +160,14 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">一個已經登入的jar</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>報名編號</code></td>
+                <td class="name"><code>signSeq</code></td>
             
 
             <td class="type">
@@ -186,7 +186,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">報名編號</td>
         </tr>
 
     
@@ -227,7 +227,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line255">line 255</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line300">line 300</a>
     </li></ul></dd>
     
 
@@ -280,7 +280,7 @@
 
     
 
-    <h4 class="name" id="getApprovedGeneralEduList"><span class="type-signature"></span>getApprovedGeneralEduList<span class="signature">(一個已經登入的jar)</span><span class="type-signature"> &rarr; {Array.&lt;{id: Number, name: String, href: String, date: Date, hours: Number}>}</span></h4>
+    <h4 class="name" id="getApprovedGeneralEduList"><span class="type-signature"></span>getApprovedGeneralEduList<span class="signature">(jar)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#ApprovedGeneralEdu">ApprovedGeneralEdu</a>>}</span></h4>
 
     
 
@@ -323,13 +323,13 @@
 
         <tr>
             
-                <td class="name"><code>一個已經登入的jar</code></td>
+                <td class="name"><code>jar</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">RequestJar</span>
+<span class="param-type"><a href="global.html#RequestJar">RequestJar</a></span>
 
 
             
@@ -339,7 +339,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">一個已經登入的jar</td>
         </tr>
 
     
@@ -380,7 +380,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line281">line 281</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line338">line 338</a>
     </li></ul></dd>
     
 
@@ -406,10 +406,6 @@
 <h5>Returns:</h5>
 
         
-<div class="param-desc">
-    已認證的時數陣
-</div>
-
 
 
 <dl>
@@ -418,7 +414,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array.&lt;{id: Number, name: String, href: String, date: Date, hours: Number}></span>
+<span class="param-type">Array.&lt;<a href="global.html#ApprovedGeneralEdu">ApprovedGeneralEdu</a>></span>
 
 
     </dd>
@@ -433,7 +429,7 @@
 
     
 
-    <h4 class="name" id="getEvents"><span class="type-signature"></span>getEvents<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;{id: Number, name: String, href: String, date: Date, max: Number, cur: Number, status: String, signupUrl: (String|null), menberListUrl: (String|null)}>}</span></h4>
+    <h4 class="name" id="getEvents"><span class="type-signature"></span>getEvents<span class="signature">(type<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#Event">Event</a>>}</span></h4>
 
     
 
@@ -449,6 +445,75 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Stirng</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    全部
+                
+                </td>
+            
+
+            <td class="description last">活動種類：'全部', '通識', '心靈', '語文'</td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -484,7 +549,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line70">line 70</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line116">line 116</a>
     </li></ul></dd>
     
 
@@ -518,7 +583,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array.&lt;{id: Number, name: String, href: String, date: Date, max: Number, cur: Number, status: String, signupUrl: (String|null), menberListUrl: (String|null)}></span>
+<span class="param-type">Array.&lt;<a href="global.html#Event">Event</a>></span>
 
 
     </dd>
@@ -533,7 +598,7 @@
 
     
 
-    <h4 class="name" id="getScore"><span class="type-signature"></span>getScore<span class="signature">(一個已經登入的jar)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    <h4 class="name" id="getScore"><span class="type-signature"></span>getScore<span class="signature">(jar)</span><span class="type-signature"> &rarr; {String}</span></h4>
 
     
 
@@ -576,13 +641,13 @@
 
         <tr>
             
-                <td class="name"><code>一個已經登入的jar</code></td>
+                <td class="name"><code>jar</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">RequestJar</span>
+<span class="param-type"><a href="global.html#RequestJar">RequestJar</a></span>
 
 
             
@@ -592,7 +657,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">一個已經登入的jar</td>
         </tr>
 
     
@@ -633,7 +698,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line48">line 48</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line82">line 82</a>
     </li></ul></dd>
     
 
@@ -686,7 +751,7 @@
 
     
 
-    <h4 class="name" id="getSignedupEvents"><span class="type-signature"></span>getSignedupEvents<span class="signature">(一個已經登入的jar)</span><span class="type-signature"> &rarr; {Array.&lt;{id: Number, name: String, href: String, date: Date, max: Number, cur: Number, menberListUrl: (String|null)}>}</span></h4>
+    <h4 class="name" id="getSignedupEvents"><span class="type-signature"></span>getSignedupEvents<span class="signature">(jar)</span><span class="type-signature"> &rarr; {Object}</span></h4>
 
     
 
@@ -729,13 +794,13 @@
 
         <tr>
             
-                <td class="name"><code>一個已經登入的jar</code></td>
+                <td class="name"><code>jar</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">RequestJar</span>
+<span class="param-type"><a href="global.html#RequestJar">RequestJar</a></span>
 
 
             
@@ -745,7 +810,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">一個已經登入的jar</td>
         </tr>
 
     
@@ -786,7 +851,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line175">line 175</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line217">line 217</a>
     </li></ul></dd>
     
 
@@ -820,7 +885,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array.&lt;{id: Number, name: String, href: String, date: Date, max: Number, cur: Number, menberListUrl: (String|null)}></span>
+<span class="param-type">Object</span>
 
 
     </dd>
@@ -835,7 +900,7 @@
 
     
 
-    <h4 class="name" id="getSignSeq"><span class="type-signature"></span>getSignSeq<span class="signature">(一個已經登入的jar, 活動ID)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+    <h4 class="name" id="getSignSeq"><span class="type-signature"></span>getSignSeq<span class="signature">(jar, eventId)</span><span class="type-signature"> &rarr; {Number}</span></h4>
 
     
 
@@ -878,13 +943,13 @@
 
         <tr>
             
-                <td class="name"><code>一個已經登入的jar</code></td>
+                <td class="name"><code>jar</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">RequestJar</span>
+<span class="param-type"><a href="global.html#RequestJar">RequestJar</a></span>
 
 
             
@@ -894,14 +959,14 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">一個已經登入的jar</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>活動ID</code></td>
+                <td class="name"><code>eventId</code></td>
             
 
             <td class="type">
@@ -920,7 +985,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">活動ID</td>
         </tr>
 
     
@@ -961,7 +1026,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line228">line 228</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line273">line 273</a>
     </li></ul></dd>
     
 
@@ -1014,14 +1079,118 @@
 
     
 
-    <h4 class="name" id="login"><span class="type-signature"></span>login<span class="signature">(A, user, user)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    <h4 class="name" id="jar"><span class="type-signature"></span>jar<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#RequestJar">RequestJar</a>}</span></h4>
 
     
 
 
 
 <div class="description">
-    登入 NCUE APP 服務
+    cookie jar，單純是 Request 套件 jar。
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Request 套件 jar
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#RequestJar">RequestJar</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="login"><span class="type-signature"></span>login<span class="signature">(jar, userId<span class="signature-attributes">opt</span>, password<span class="signature-attributes">opt</span>, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    登入 NCUE APP 服務，
 </div>
 
 
@@ -1045,6 +1214,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -1057,30 +1228,38 @@
 
         <tr>
             
-                <td class="name"><code>A</code></td>
+                <td class="name"><code>jar</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">RequestJar</span>
+<span class="param-type"><a href="global.html#RequestJar">RequestJar</a></span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">jar</td>
+            <td class="description last">一個jar</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>user</code></td>
+                <td class="name"><code>userId</code></td>
             
 
             <td class="type">
@@ -1093,17 +1272,27 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">id</td>
+            <td class="description last">學號，若空值則使用記憶帳號</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>user</code></td>
+                <td class="name"><code>password</code></td>
             
 
             <td class="type">
@@ -1116,10 +1305,161 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">password</td>
+            <td class="description last">密碼，若空值則使用記憶密碼</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">選項
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>remember</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last">是否記憶帳密</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>autoRelogin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last">當伺服器端 session 過期，是否自動重新登入</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -1160,7 +1500,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line15">line 15</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line35">line 35</a>
     </li></ul></dd>
     
 
@@ -1213,7 +1553,7 @@
 
     
 
-    <h4 class="name" id="signupEvent"><span class="type-signature"></span>signupEvent<span class="signature">(一個已經登入的jar, 活動ID, 用戶學號)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    <h4 class="name" id="signupEvent"><span class="type-signature"></span>signupEvent<span class="signature">(jar, eventId, userId)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
 
     
 
@@ -1256,13 +1596,13 @@
 
         <tr>
             
-                <td class="name"><code>一個已經登入的jar</code></td>
+                <td class="name"><code>jar</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">RequestJar</span>
+<span class="param-type"><a href="global.html#RequestJar">RequestJar</a></span>
 
 
             
@@ -1272,14 +1612,14 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">一個已經登入的jar</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>活動ID</code></td>
+                <td class="name"><code>eventId</code></td>
             
 
             <td class="type">
@@ -1298,14 +1638,14 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">活動ID</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>用戶學號</code></td>
+                <td class="name"><code>userId</code></td>
             
 
             <td class="type">
@@ -1321,7 +1661,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">用戶學號</td>
         </tr>
 
     
@@ -1362,7 +1702,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line126">line 126</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line166">line 166</a>
     </li></ul></dd>
     
 
@@ -1414,6 +1754,759 @@
     
 
     
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id="ApprovedGeneralEdu">ApprovedGeneralEdu</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">活動序號</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">活動名稱</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>href</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">活動網址</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">活動日期</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hours</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">十數</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line329">line 329</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="Event">Event</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">活動序號</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">活動名稱</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>href</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">活動網址</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">活動日期</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>max</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">人數上限</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cur</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">目前報名人數</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">活動狀態</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>signupUrl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">報名網址</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>menberListUrl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">成員名單網址</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line103">line 103</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="RequestJar">RequestJar</h4>
+
+
+
+
+<div class="description">
+    Request 套件的 jar 物件。
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">學號</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">密碼</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>remember</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">是否記憶帳密</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>autoRelogin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">當伺服器端 session 過期，是否自動重新登入</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+    
 
     
 </article>
@@ -1426,13 +2519,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#cancelSignupEvent">cancelSignupEvent</a></li><li><a href="global.html#getApprovedGeneralEduList">getApprovedGeneralEduList</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getScore">getScore</a></li><li><a href="global.html#getSignedupEvents">getSignedupEvents</a></li><li><a href="global.html#getSignSeq">getSignSeq</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#signupEvent">signupEvent</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#cancelSignupEvent">cancelSignupEvent</a></li><li><a href="global.html#getApprovedGeneralEduList">getApprovedGeneralEduList</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getScore">getScore</a></li><li><a href="global.html#getSignedupEvents">getSignedupEvents</a></li><li><a href="global.html#getSignSeq">getSignSeq</a></li><li><a href="global.html#jar">jar</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#signupEvent">signupEvent</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sat Apr 29 2017 01:46:47 GMT+0800 (台北標準時間)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 02:49:09 GMT+0800 (台北標準時間)
 </footer>
 
 <script> prettyPrint(); </script>
