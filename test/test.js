@@ -79,6 +79,20 @@ describe('線上報名系統', function () {
       .then(() => done(), done)
   })
 
+  it('should 取得活動報名名單', function (done) {
+    api.getEventMember(targetEventId)
+      .then((members) => {
+        members.forEach((member) => {
+          assert.ok(typeof member.name === 'string')
+          assert.ok(typeof member.gender === 'number')
+          assert.ok(member.gender === 1 || member.gender === 2)
+          assert.ok(typeof member.from === 'string')
+          assert.ok(typeof member.job === 'string')
+        })
+      })
+      .then(() => done(), done)
+  })
+
   it('should 取得報名活動清單', function (done) {
     api.getSignedupEvents(jar)
       .then((events) => {

@@ -226,6 +226,54 @@ const api = {
   },
 
   /**
+   * @typedef {Object} Member
+   * @property {String} name - 姓名
+   * @property {Number} gender - 性別，1 為男性，2 為女性。
+   * @property {String} from - 服務單位
+   * @property {String} job - 職稱
+   */
+
+  /**
+   * 取得活動報名名單
+   * @name getEventMember
+   * @method
+   * @param {Number} eventId - 活動編號
+   * @returns {Member[]}
+   */
+  getEventMember: function (eventId) {
+    const options = {
+      method: 'GET',
+      url: 'http://aps.ncue.edu.tw/app/show_member.php?crs_seq=' + eventId,
+      headers: {
+        'cache-control': 'no-cache'
+      }
+    }
+
+    return request(options)
+      .then(([res, body]) => {
+        const
+          $ = cheerio.load(body, {
+            ignoreWhitespace: true,
+            xmlMode: false,
+            decodeEntities: false
+          }),
+          rows = $('#table-custom-2 > tbody > tr')
+          .filter((e) => e.data !== ' '),
+          data = rows.map((i, row) => {
+            const children = $(row).children()
+              .filter((child) => child.data !== ' ')
+            return {
+              name: children.eq(1).text(),
+              gender: (children.eq(2).text() === '男') ? 1 : 2,
+              from: children.eq(3).text(),
+              job: children.eq(4).text()
+            }
+          })
+        return data.get()
+      })
+  },
+
+  /**
    * 報名活動
    * @name signupEvent
    * @method
@@ -368,7 +416,7 @@ const api = {
     return request(options)
       .then(([res, body]) => {
         const match = body.match(/Del_check\('(\d*)'\)/)
-        if (match.length < 1) { throw new Error('找不到報名編號。') }
+        if (match.length < 1) { throw new Error('找不到報名編號，可能未報名該活動。') }
         return Number(match[1])
       })
   },
