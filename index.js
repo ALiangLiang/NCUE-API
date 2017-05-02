@@ -139,9 +139,21 @@ const api = {
    * @returns {Event[]}
    */
   getEvents: function (type = '全部') {
-    let selpp = (type === '通識') ? 1 :
-      ((type === '心靈') ? 2 :
-        ((type === '語文') ? 4 : 0))
+    let selpp = 0
+
+    if (type === '全部') {
+      selpp = 0
+    } else if (type === '通識') {
+      selpp = 1
+    } else if (type === '心靈') {
+      selpp = 2
+    } else if (type === '語文') {
+      selpp = 4
+    } else {
+      console.warn('未知的種類，使用預設種類「全部」')
+      selpp = 0
+    }
+
     const options = {
       method: 'GET',
       url: 'http://aps.ncue.edu.tw/app/signup.php?selpp=' + selpp,
@@ -186,7 +198,7 @@ const api = {
    * @name getEvent
    * @method
    * @param {Number} eventId - 活動編號
-   * @returns {Event[]}
+   * @returns {Event2[]}
    */
   getEvent: function (eventId) {
     const options = {
@@ -220,7 +232,8 @@ const api = {
           max: Number(children.eq(8).text()),
           status: $('div[data-role=content] > a:nth-child(3)').text(),
           signupUrl: (signupUrl !== 'signup.php') ? signupUrl : null,
-          menberListUrl: 'http://aps.ncue.edu.tw/app/show_member.php?crs_seq=' + eventId
+          menberListUrl: 'http://aps.ncue.edu.tw/app/show_member.php?crs_seq=' + eventId,
+          description: $('fieldset:not(.ui-grid-a) > div.txt').html().replace(/<(?:.|\n)*?>/gm, '\n')
         }
       })
   },

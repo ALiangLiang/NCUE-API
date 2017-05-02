@@ -75,6 +75,7 @@ describe('線上報名系統', function () {
             event.signupUrl === null)
         assert.ok(typeof event.menberListUrl === 'string' ||
             event.menberListUrl === null)
+        assert.ok(typeof event.description === 'string')
       })
       .then(() => done(), done)
   })
