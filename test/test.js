@@ -25,12 +25,12 @@ describe('登入', function() {
       .then(done, done)
   })
 
-  // it('should 回傳 false 當密碼錯誤的時候', function(done) {
-  //   this.timeout(10000);
-  //   api.login(jar, conf.user.id, 'foobar')
-  //     .then((result) => assert.strictEqual(result, false))
-  //     .then(done, done)
-  // })
+  it('should 回傳 false 當密碼錯誤的時候', function(done) {
+    this.timeout(10000);
+    api.login(jar, conf.user.id, 'foobar')
+      .then((result) => assert.strictEqual(result, false))
+      .then(done, done)
+  })
 })
 
 describe('線上報名系統', function() {
@@ -151,6 +151,24 @@ describe('課表', function() {
           assert.ok(course.periods.length !== void 0)
           assert.ok(typeof course.place === 'string')
           assert.ok(typeof course.credit === 'number')
+        })
+      })
+      .then(() => done(), done)
+  })
+
+})
+
+describe('成績', function() {
+
+  it('should 回傳成績陣列', function(done) {
+    api.getResult(jar)
+      .then((results) => {
+        return results.forEach((result) => {
+          assert.ok(typeof result.name === 'string')
+          assert.ok(typeof result.year === 'number')
+          assert.ok(typeof result.semester === 'number')
+          assert.ok(typeof result.score === 'number')
+          assert.ok(typeof result.credit === 'number')
         })
       })
       .then(() => done(), done)

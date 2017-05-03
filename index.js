@@ -90,13 +90,23 @@ const api = {
   },
 
   /**
+   * 成績
+   * @typedef {Object} Result
+   * @property {String} name - 課程名稱
+   * @property {Number} year - 學年度
+   * @property {Number} semester - 學期
+   * @property {Number} score - 學期分數
+   * @property {Number} credit - 學分
+   */
+
+  /**
    * 取得用戶歷年成績
-   * @name getScore
+   * @name getResult
    * @method
    * @param {RequestJar} jar - 一個已經登入的jar
-   * @returns {String} 回傳成績頁面
+   * @returns {Result[]} 回傳成績陣列
    */
-  getScore: function(jar) {
+  getResult: function(jar) {
     return request({
         method: 'GET',
         url: 'http://aps.ncue.edu.tw/app/score.php',
@@ -110,16 +120,48 @@ const api = {
           if (jar.autoRelogin && jar.remember && jar.userId && jar.password)
             return api.login(jar)
               .then((result) => (result) ?
-                api.getScore(jar) :
+                api.getCurriculum(jar) :
                 Promise.reject(new Error('無法登入')))
           else
             return Promise.reject(Error('尚未登入。'))
         }
-        return body
+
+        let
+          currentYear,
+          currentSemester
+
+        const
+          $ = cheerio.load(body, {
+            ignoreWhitespace: true,
+            xmlMode: false,
+            decodeEntities: false
+          }),
+          rows = $('ul > li:not(:has(h2))')
+          .filter((e) => e.data !== ' '),
+          data = rows.map((i, row) => {
+            row = $(row)
+            if (row.has('h3,p,span').length !== 0) {
+              return {
+                name: row.find('h3').text(),
+                year: currentYear,
+                semester: currentSemester,
+                score: Number(row.find('p').text().match(/分數：(\d*)/)[1]),
+                credit: Number(row.find('span').text()),
+              }
+            } else {
+              const temp = row.text().match(/\d+/g)
+              currentYear = Number(temp[0])
+              currentSemester = Number(temp[1])
+              return void 0
+            }
+          })
+
+        return data.get()
       })
   },
 
   /**
+   * 課程
    * @typedef {Object} Course
    * @property {String} name - 課程名稱
    * @property {Number[]} periods - 上課節次陣列

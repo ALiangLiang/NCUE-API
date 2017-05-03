@@ -118,14 +118,23 @@ const api = {
   },
 
   /**
+   * 成績
+   * @typedef {Object} Result
+   * @property {String} name - 課程名稱
+   * @property {Number} year - 學年度
+   * @property {Number} semester - 學期
+   * @property {Number} score - 學期分數
+   * @property {Number} credit - 學分
+   */
+
+  /**
    * 取得用戶歷年成績
-   * @name getScore
+   * @name getResult
    * @method
    * @param {RequestJar} jar - 一個已經登入的jar
-   * @returns {String} 回傳成績頁面
+   * @returns {Result[]} 回傳成績陣列
    */
-  getScore: function(jar) {
-
+  getResult: function(jar) {
     return request({
         method: 'GET',
         url: 'http://aps.ncue.edu.tw/app/score.php',
@@ -135,16 +144,112 @@ const api = {
         jar: jar
       })
       .then(([res, body]) => {
-        if (body.search('系統已自動登出') !== -1) {
+        if (body.search('請於首頁右上角之【設定】登入後使用') !== -1) {
           if (jar.autoRelogin &amp;&amp; jar.remember &amp;&amp; jar.userId &amp;&amp; jar.password)
             return api.login(jar)
               .then((result) => (result) ?
-                api.Score(jar) :
+                api.getCurriculum(jar) :
                 Promise.reject(new Error('無法登入')))
           else
-            throw new Error('尚未登入。')
+            return Promise.reject(Error('尚未登入。'))
         }
-        return body
+
+        let
+          currentYear,
+          currentSemester
+
+        const
+          $ = cheerio.load(body, {
+            ignoreWhitespace: true,
+            xmlMode: false,
+            decodeEntities: false
+          }),
+          rows = $('ul > li:not(:has(h2))')
+          .filter((e) => e.data !== ' '),
+          data = rows.map((i, row) => {
+            row = $(row)
+            if (row.has('h3,p,span').length !== 0) {
+              return {
+                name: row.find('h3').text(),
+                year: currentYear,
+                semester: currentSemester,
+                score: Number(row.find('p').text().match(/分數：(\d*)/)[1]),
+                credit: Number(row.find('span').text()),
+              }
+            } else {
+              const temp = row.text().match(/\d+/g)
+              currentYear = Number(temp[0])
+              currentSemester = Number(temp[1])
+              return void 0
+            }
+          })
+
+        return data.get()
+      })
+  },
+
+  /**
+   * 課程
+   * @typedef {Object} Course
+   * @property {String} name - 課程名稱
+   * @property {Number[]} periods - 上課節次陣列
+   * @property {String} place - 上課教室
+   * @property {Number} credit - 學分
+   */
+
+  /**
+   * 取得用戶課表
+   * @name getCurriculum
+   * @method
+   * @param {RequestJar} jar - 一個已經登入的jar
+   * @returns {Course[]} 回傳課表
+   */
+  getCurriculum: function(jar) {
+    return request({
+        method: 'GET',
+        url: 'http://aps.ncue.edu.tw/app/table.php',
+        headers: {
+          'cache-control': 'no-cache'
+        },
+        jar: jar
+      })
+      .then(([res, body]) => {
+        if (body.search('請於首頁右上角之【設定】登入後使用') !== -1) {
+          if (jar.autoRelogin &amp;&amp; jar.remember &amp;&amp; jar.userId &amp;&amp; jar.password)
+            return api.login(jar)
+              .then((result) => (result) ?
+                api.getCurriculum(jar) :
+                Promise.reject(new Error('無法登入')))
+          else
+            return Promise.reject(Error('尚未登入。'))
+        }
+
+
+        const
+          $ = cheerio.load(body, {
+            ignoreWhitespace: true,
+            xmlMode: false,
+            decodeEntities: false
+          }),
+          rows = $('ul > li:has(h3,p,span)')
+          .filter((e) => e.data !== ' '),
+          data = rows.map((i, row) => {
+            row = $(row)
+
+            const periodMatched = row.find('p').text().match(/(?!上課節次：)(\d\d)-(\d\d)/) || []
+
+            return {
+              name: row.find('h3').text(),
+              periods: Array.apply(null, {
+                  length: Number(periodMatched[2]) - Number(periodMatched[1]) + 1
+                })
+                .map((e, i) => i + Number(periodMatched[1])),
+              place: row.find('p').text().match(/上課教室：(.*)/)[1],
+              credit: Number(row.find('span').text()),
+            }
+          })
+
+        return data.get()
       })
   },
 
@@ -256,14 +361,14 @@ const api = {
           throw new Error('活動報名失敗。')
         else if (body.search('您已經報名本活動了') !== -1)
           throw new Error('已經報名本活動。')
-        else if (body.search('系統已自動登出') !== -1) {
+        else if (body.search('請於首頁右上角之【設定】登入後使用') !== -1) {
           if (jar.autoRelogin &amp;&amp; jar.remember &amp;&amp; jar.userId &amp;&amp; jar.password)
             return api.login(jar)
               .then((result) => (result) ?
                 api.signupEvent(jar, eventId, userId) :
                 Promise.reject(new Error('無法登入')))
           else
-            throw new Error('尚未登入。')
+            return Promise.reject(Error('尚未登入。'))
         }
 
         return true
@@ -302,7 +407,7 @@ const api = {
                 api.getSignedupEvents(jar) :
                 Promise.reject(new Error('無法登入')))
           else
-            throw new Error('尚未登入。')
+            return Promise.reject(Error('尚未登入。'))
         }
 
         const
@@ -472,13 +577,13 @@ module.exports = api
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#cancelSignupEvent">cancelSignupEvent</a></li><li><a href="global.html#getApprovedGeneralEduList">getApprovedGeneralEduList</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getScore">getScore</a></li><li><a href="global.html#getSignedupEvents">getSignedupEvents</a></li><li><a href="global.html#getSignSeq">getSignSeq</a></li><li><a href="global.html#jar">jar</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#signupEvent">signupEvent</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#cancelSignupEvent">cancelSignupEvent</a></li><li><a href="global.html#getApprovedGeneralEduList">getApprovedGeneralEduList</a></li><li><a href="global.html#getCurriculum">getCurriculum</a></li><li><a href="global.html#getEvents">getEvents</a></li><li><a href="global.html#getResult">getResult</a></li><li><a href="global.html#getSignedupEvents">getSignedupEvents</a></li><li><a href="global.html#getSignSeq">getSignSeq</a></li><li><a href="global.html#jar">jar</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#signupEvent">signupEvent</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 04:05:28 GMT+0800 (台北標準時間)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu May 04 2017 02:42:45 GMT+0800 (台北標準時間)
 </footer>
 
 <script> prettyPrint(); </script>
