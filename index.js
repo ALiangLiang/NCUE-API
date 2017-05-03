@@ -110,12 +110,76 @@ const api = {
           if (jar.autoRelogin && jar.remember && jar.userId && jar.password)
             return api.login(jar)
               .then((result) => (result) ?
-                api.Score(jar) :
+                api.getScore(jar) :
                 Promise.reject(new Error('無法登入')))
           else
-            throw new Error('尚未登入。')
+            return Promise.reject(Error('尚未登入。'))
         }
         return body
+      })
+  },
+
+  /**
+   * @typedef {Object} Course
+   * @property {String} name - 課程名稱
+   * @property {Number[]} periods - 上課節次陣列
+   * @property {String} place - 上課教室
+   * @property {Number} credit - 學分
+   */
+
+  /**
+   * 取得用戶課表
+   * @name getCurriculum
+   * @method
+   * @param {RequestJar} jar - 一個已經登入的jar
+   * @returns {Course[]} 回傳課表
+   */
+  getCurriculum: function(jar) {
+    return request({
+        method: 'GET',
+        url: 'http://aps.ncue.edu.tw/app/table.php',
+        headers: {
+          'cache-control': 'no-cache'
+        },
+        jar: jar
+      })
+      .then(([res, body]) => {
+        if (body.search('請於首頁右上角之【設定】登入後使用') !== -1) {
+          if (jar.autoRelogin && jar.remember && jar.userId && jar.password)
+            return api.login(jar)
+              .then((result) => (result) ?
+                api.getCurriculum(jar) :
+                Promise.reject(new Error('無法登入')))
+          else
+            return Promise.reject(Error('尚未登入。'))
+        }
+
+
+        const
+          $ = cheerio.load(body, {
+            ignoreWhitespace: true,
+            xmlMode: false,
+            decodeEntities: false
+          }),
+          rows = $('ul > li:has(h3,p,span)')
+          .filter((e) => e.data !== ' '),
+          data = rows.map((i, row) => {
+            row = $(row)
+
+            const periodMatched = row.find('p').text().match(/(?!上課節次：)(\d\d)-(\d\d)/) || []
+
+            return {
+              name: row.find('h3').text(),
+              periods: Array.apply(null, {
+                  length: Number(periodMatched[2]) - Number(periodMatched[1]) + 1
+                })
+                .map((e, i) => i + Number(periodMatched[1])),
+              place: row.find('p').text().match(/上課教室：(.*)/)[1],
+              credit: Number(row.find('span').text()),
+            }
+          })
+
+        return data.get()
       })
   },
 
@@ -234,7 +298,7 @@ const api = {
                 api.signupEvent(jar, eventId, userId) :
                 Promise.reject(new Error('無法登入')))
           else
-            throw new Error('尚未登入。')
+            return Promise.reject(Error('尚未登入。'))
         }
 
         return true
@@ -273,7 +337,7 @@ const api = {
                 api.getSignedupEvents(jar) :
                 Promise.reject(new Error('無法登入')))
           else
-            throw new Error('尚未登入。')
+            return Promise.reject(Error('尚未登入。'))
         }
 
         const

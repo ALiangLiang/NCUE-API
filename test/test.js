@@ -140,3 +140,20 @@ describe('線上報名系統', function() {
       .then(() => done(), done)
   })
 })
+
+describe('課表', function() {
+
+  it('should 回傳課程陣列', function(done) {
+    api.getCurriculum(jar)
+      .then((courses) => {
+        return courses.forEach((course) => {
+          assert.ok(typeof course.name === 'string')
+          assert.ok(course.periods.length !== void 0)
+          assert.ok(typeof course.place === 'string')
+          assert.ok(typeof course.credit === 'number')
+        })
+      })
+      .then(() => done(), done)
+  })
+
+})
