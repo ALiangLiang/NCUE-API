@@ -166,6 +166,8 @@ const api = {
    * 課程
    * @typedef {Object} Course
    * @property {String} name - 課程名稱
+   * @property {Number} year - 學年度
+   * @property {Number} semester - 學期
    * @property {Number[]} periods - 上課節次陣列
    * @property {String} place - 上課教室
    * @property {Number} credit - 學分
@@ -207,6 +209,9 @@ const api = {
           }),
           rows = $('ul > li:has(h3,p,span)')
           .filter((e) => e.data !== ' '),
+          temp = $('div[data-role=header] > h1').text().match(/\d+/g),
+          year = Number(temp[0]),
+          semester = Number(temp[1]),
           data = rows.map((i, row) => {
             row = $(row)
 
@@ -214,6 +219,8 @@ const api = {
 
             return {
               name: row.find('h3').text(),
+              year: year,
+              semester: semester,
               periods: Array.apply(null, {
                   length: Number(periodMatched[2]) - Number(periodMatched[1]) + 1
                 })
@@ -584,6 +591,7 @@ const api = {
   },
 
   /**
+   * 認證通識時數
    * @typedef {Object} ApprovedGeneralEdu
    * @property {Number} id - 活動序號
    * @property {String} name - 活動名稱

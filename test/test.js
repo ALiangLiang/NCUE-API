@@ -4,22 +4,22 @@ const
   assert = require('assert'),
   jar = api.jar()
 
-describe('登入', function () {
-  it('should 回傳 true 當登入成功', function (done) {
+describe('登入', function() {
+  it('should 回傳 true 當登入成功', function(done) {
     api.login(jar, conf.user.id, conf.user.password, {
-      remember: true
-    })
+        remember: true
+      })
       .then((result) => assert.strictEqual(result, true))
       .then(done, done)
   })
 
-  it('should 回傳 true 當登出成功', function (done) {
+  it('should 回傳 true 當登出成功', function(done) {
     api.logout(jar)
       .then((result) => assert.strictEqual(result, true))
       .then(done, done)
   })
 
-  it('should 回傳 true 當使用記憶帳密登入成功', function (done) {
+  it('should 回傳 true 當使用記憶帳密登入成功', function(done) {
     api.login(jar)
       .then((result) => assert.strictEqual(result, true))
       .then(done, done)
@@ -33,12 +33,12 @@ describe('登入', function () {
   })
 })
 
-describe('線上報名系統', function () {
+describe('線上報名系統', function() {
   let
     targetEventId,
     originSignedupEvents = []
 
-  it('should 回傳活動列表陣列', function (done) {
+  it('should 回傳活動列表陣列', function(done) {
     api.getEvents()
       .then((events) => {
         events.forEach((event) => {
@@ -56,12 +56,14 @@ describe('線上報名系統', function () {
         })
 
         targetEventId = events.filter((event) => event.signupUrl && (event.max > event.cur))[1].id
-        if (!targetEventId) { throw new Error('目前沒有可以測試的活動') }
+        if (!targetEventId) {
+          throw new Error('目前沒有可以測試的活動')
+        }
       })
       .then(() => done(), done)
   })
 
-  it('should 取得活動資訊', function (done) {
+  it('should 取得活動資訊', function(done) {
     api.getEvent(targetEventId)
       .then((event) => {
         assert.ok(typeof event.id === 'number')
@@ -72,15 +74,15 @@ describe('線上報名系統', function () {
         assert.ok(typeof event.max === 'number')
         assert.ok(typeof event.status === 'string')
         assert.ok(typeof event.signupUrl === 'string' ||
-            event.signupUrl === null)
+          event.signupUrl === null)
         assert.ok(typeof event.menberListUrl === 'string' ||
-            event.menberListUrl === null)
+          event.menberListUrl === null)
         assert.ok(typeof event.description === 'string')
       })
       .then(() => done(), done)
   })
 
-  it('should 取得活動報名名單', function (done) {
+  it('should 取得活動報名名單', function(done) {
     api.getEventMember(targetEventId)
       .then((members) => {
         members.forEach((member) => {
@@ -94,7 +96,7 @@ describe('線上報名系統', function () {
       .then(() => done(), done)
   })
 
-  it('should 取得報名活動清單', function (done) {
+  it('should 取得報名活動清單', function(done) {
     api.getSignedupEvents(jar)
       .then((events) => {
         events.forEach((event) => {
@@ -113,13 +115,13 @@ describe('線上報名系統', function () {
       .then(() => done(), done)
   })
 
-  it('should 回傳 true 當報名成功的時候', function (done) {
+  it('should 回傳 true 當報名成功的時候', function(done) {
     api.signupEvent(jar, targetEventId, conf.user.id)
       .then((result) => assert.strictEqual(result, true))
       .then(done, done)
   })
 
-  it('should 回傳 true 當取消報名成功的時候', function (done) {
+  it('should 回傳 true 當取消報名成功的時候', function(done) {
     api.getSignedupEvents(jar)
       // 找出新報名的活動
       .then((events) => events.filter((e) =>
@@ -131,13 +133,13 @@ describe('線上報名系統', function () {
       .then(() => done(), done)
   })
 
-  it('should 回傳 false 當取消報名失敗的時候', function (done) {
+  it('should 回傳 false 當取消報名失敗的時候', function(done) {
     api.getSignedupEvents(jar)
       .then((signSeq) => assert.ok(api.cancelSignupEvent(jar, 9487)))
       .then(done, done)
   })
 
-  it('should 回傳已認證的時數列表', function (done) {
+  it('should 回傳已認證的時數列表', function(done) {
     api.getApprovedGeneralEduList(jar)
       .then((list) => {
         if (list.length === 0) {
@@ -154,13 +156,13 @@ describe('線上報名系統', function () {
       .then(() => done(), done)
   })
 
-  it('should 三種種類的活動，等於全部活動', function (done) {
+  it('should 三種種類的活動，等於全部活動', function(done) {
     Promise.all([
-      api.getEvents('通識'),
-      api.getEvents('心靈'),
-      api.getEvents('語文'),
-      api.getEvents('全部')
-    ])
+        api.getEvents('通識'),
+        api.getEvents('心靈'),
+        api.getEvents('語文'),
+        api.getEvents('全部')
+      ])
       .then((types) => {
         const
           concat = types[0].concat(types[1], types[2]),
@@ -182,6 +184,8 @@ describe('課表', function() {
       .then((courses) => {
         return courses.forEach((course) => {
           assert.ok(typeof course.name === 'string')
+          assert.ok(typeof course.year === 'number')
+          assert.ok(typeof course.semester === 'number')
           assert.ok(course.periods.length !== void 0)
           assert.ok(typeof course.place === 'string')
           assert.ok(typeof course.credit === 'number')
